@@ -1,35 +1,37 @@
 clear,clc
-choise = menu("Use visual tools?", "Yes", "no");
+choise = menu("Use progressionbar?", "Yes", "no")
 numberOfPatterns = [12,24,48,70,100,120];
 numberOfBits = 120;
-numberOfTrials = 1000;
+%numberOfTrials = 100;
+numberOfTrials = 10000;
 format long
-
-if choise==1
-        h = waitbar(0,"initiate");
-end
-
+tic
+menu("title")
 for patternIterate = 1:length(numberOfPatterns)
     error = 0;
     progress=0;
     
+    if choise==1
+    h = waitbar(0,"initiate");
+    end
     for trials = 1:numberOfTrials
-        if choise==1
-            progress=trials/numberOfTrials;
-            waitbar(progress,h,"pattern(" + patternIterate + ") = " + numberOfPatterns(patternIterate));
-        end
+    
+    if choise==1
+    progress=trials/numberOfTrials;
+    waitbar(progress,h,"pattern(" + patternIterate + ") = " + numberOfPatterns(patternIterate));
+    end
     
         X = randi([0 1],numberOfBits,numberOfPatterns(patternIterate));
         X(X == 0) = -1;
 
         weightMatrix = getWeightMatrix(X);
-        
         %for i = 1:numberOfBits
         %    weightMatrix(i,i) = 0;
         %end
-        
         [randomPattern randomPatternNumber randomPatternBitNumber] = getRandomPattern(X);
 
+        
+        
         b = getB(randomPattern,weightMatrix);
 
         if sign(b(randomPatternBitNumber)) == sign(randomPattern(randomPatternBitNumber))
@@ -39,9 +41,8 @@ for patternIterate = 1:length(numberOfPatterns)
         end
     end
     
+
     probability(patternIterate) = error/numberOfTrials;
-    
-    if choise==1
-        msgbox("Probability for pattern(" + patternIterate + ") = " + probability(patternIterate))
-    end
+    msgbox("Probability for pattern(" + patternIterate + ") = " + probability())
 end
+toc
