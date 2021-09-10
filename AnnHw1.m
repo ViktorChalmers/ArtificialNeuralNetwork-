@@ -1,47 +1,42 @@
 clear,clc
-patterns = [12,24,48,70,100,120];
+numberOfPatterns = [12,24,48,70,100,120];
 numberOfBits = 120;
-trials = 10e5;
-X = randi([0 1],numberOfBits,patterns(1));
-X(X == 0) = -1;
-weightMatrix = zeros(numberOfBits,numberOfBits);
-mtimes(X(:,1),X(:,1)');
+%numberOfTrials = 100;
+numberOfTrials = 100000;
+format long
 
-%for j = 1:trials
-for i = 1:12
-   %W = W+outerproduct
-   %W = ntimes(Xi,Xi)
-    weightMatrix = (weightMatrix+mtimes(X(:,i),X(:,i)'))/numberOfBits;
-end
-
-for i = 1:numberOfBits
-    weightMatrix(i,i) = 0;
-end
-
-bRand=zeros(2)
-for j=1:2
+for patternIterate = 1:length(numberOfPatterns)
+    error = 0;
+    progress=0
     
+    for trials = 1:numberOfTrials
     
-randomNumber = randi([1,patterns(1)]);
-randomPattern = X(:,randomNumber);
-randomBit = randomPattern(randi([1,numberOfBits]));
-weightMatrix(:,1);
+        if (round(100*trials/numberOfTrials,-1)>progress)
+            progress = round(100*trials/numberOfTrials,-1)
+            progress=progress+10
+        end
+    
 
-length(X(120,1));
-length(weightMatrix(1,:));
-%b = zeros(1,12);
 
-bRand = 0
+        X = randi([0 1],numberOfBits,numberOfPatterns(patternIterate));
+        X(X == 0) = -1;
 
-for i = 1:12
-    bRand(j) = bRand(j)+weightMatrix(randomNumber,i)*randomPattern(i);
+        weightMatrix = getWeightMatrix(X);
+        %for i = 1:numberOfBits
+        %    weightMatrix(i,i) = 0;
+        %end
+        [randomPattern randomPatternNumber randomPatternBitNumber] = getRandomPattern(X);
+
+        
+        
+        b = getB(randomPattern,weightMatrix);
+
+        if sign(b(randomPatternBitNumber)) == sign(randomPattern(randomPatternBitNumber))
+            continue
+        else
+            error = error+1;
+        end
+    end
+
+    probability(patternIterate) = error/numberOfTrials
 end
-
-end
-
-
-randomPattern;
-if (sign(b) == sign(randomPattern));
-"hej"
-end
-
