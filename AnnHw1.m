@@ -2,7 +2,7 @@ clear,clc
 choise = menu("Use visual tools?", "Yes", "no");
 numberOfPatterns = [12,24,48,70,100,120];
 numberOfBits = 120;
-numberOfTrials = 1000;
+numberOfTrials = 100000;
 format long
 
 if choise==1
@@ -30,7 +30,7 @@ for patternIterate = 1:length(numberOfPatterns)
         
         [randomPattern randomPatternNumber randomPatternBitNumber] = getRandomPattern(X);
 
-        b = getB(randomPattern,weightMatrix);
+        b = McCullochPitts(randomPattern,weightMatrix);
 
         if sign(b(randomPatternBitNumber)) == sign(randomPattern(randomPatternBitNumber))
             continue
@@ -39,7 +39,7 @@ for patternIterate = 1:length(numberOfPatterns)
         end
     end
     
-    probability(patternIterate) = error/numberOfTrials;
+    probability(patternIterate) = error/numberOfTrials
     
     if choise==1
         msgbox("Probability for pattern(" + patternIterate + ") = " + probability(patternIterate))

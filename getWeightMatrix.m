@@ -8,5 +8,5 @@ for i = 1:numberOfPatterns
     W = W+mtimes(X(:,i),X(:,i)');
 end
 
-wMatrix = W/numberOfBits;
+wMatrix = (W/numberOfBits);
 end
