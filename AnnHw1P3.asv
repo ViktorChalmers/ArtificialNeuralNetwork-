@@ -1,6 +1,0 @@
-numberOfNeurons = 200
-numberOfRandomPatterns = 7
-numberOfTrials = 20000
-
- X = randi([0 1],numberOfNeurons,numberOfPatterns(patternIterate));
- X(X == 0) = -1;
