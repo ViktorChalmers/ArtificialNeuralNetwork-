@@ -30,7 +30,7 @@ for patternIterate = 1:length(numberOfPatterns)
         
         [randomPattern randomPatternNumber randomPatternBitNumber] = getRandomPattern(X);
 
-        b = McCullochPitts(randomPattern,weightMatrix);
+        b = sign(McCullochPitts(randomPattern,weightMatrix));
 
         if sign(b(randomPatternBitNumber)) == sign(randomPattern(randomPatternBitNumber))
             continue

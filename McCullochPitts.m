@@ -9,5 +9,5 @@ for i = 1:numberOfBits
     end
 end
 
-be = sign(b);
+be = b;
 end

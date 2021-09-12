@@ -14,14 +14,12 @@ randomPatterns(randomPatterns == 0) = -1;
  feed = randomPatterns(:,1);
  b = McCullochPitts(randomPatterns(:,1),weightMatrix);
  
- for k = 1:5
- wBar = waitbar(0,"initiate");
+ wBar = waitbar(0,"initiate")
  for j = 1:100
      progress = j/100;
      waitbar(progress,wBar,progress*100 + "%")
-     r = rand(1);
      for i = 1:1000
-
+         r = rand(1);
          for iIteration = 1:length(b)
              if r < stochasticFunction(b(iIteration))
                  s(iIteration,1) = 1;
@@ -33,6 +31,5 @@ randomPatterns(randomPatterns == 0) = -1;
      end
  m(j) = mean(b);
  end
- mT(k) = mean(m)
- end
+ mean(m)
  
