@@ -9,61 +9,48 @@ distortedPattern(:,1) = [[1, -1, 1, 1, -1, 1, -1, -1, 1, -1], [1, -1, 1, 1, -1, 
 distortedPattern(:,2) = [[1, -1, -1, 1, -1, -1, -1, -1, 1, 1], [-1, -1, -1, -1, -1, 1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1, -1, -1, -1, -1], [1, 1, -1, -1, 1, -1, -1, -1, -1, 1], [1, -1, -1, 1, -1, 1, 1, -1, -1, -1], [-1, 1, -1, -1, 1, -1, -1, -1, -1, -1], [1, 1, -1, -1, -1, -1, -1, 1, -1, -1], [1, -1, 1, -1, 1, 1, 1, 1, -1, 1], [-1, -1, -1, -1, 1, -1, 1, -1, -1, 1], [1, -1, 1, -1, -1, -1, 1, -1, -1, -1], [-1, 1, -1, -1, -1, -1, -1, 1, -1, -1], [-1, -1, -1, 1, 1, 1, -1, -1, -1, 1], [-1, 1, -1, 1, -1, 1, 1, -1, -1, 1], [-1, -1, -1, 1, 1, -1, -1, 1, 1, 1], [1, 1, -1, 1, 1, -1, -1, -1, 1, 1], [-1, 1, 1, -1, -1, -1, -1, -1, 1, -1]]';
 distortedPattern(:,3) = [[1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, -1, -1, 1, 1, 1], [1, 1, 1, -1, -1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, 1, -1, -1, -1]]';
 
+randomPattern = randi([0 1],160,1);
+randomPattern(randomPattern == 0) = -1;
+distortedPattern(:,4) = randomPattern
+
 patterns = [x1 x2 x3 x4 x5];
 [numberOfBits numberOfPatterns] = size(patterns);
 numberOfDistortedPattern = length(distortedPattern(1,:));
+while(true)
+    
+    for iDistortedPattern = 1:numberOfDistortedPattern
+        subplot(length(distortedPattern(1,:)),1,iDistortedPattern)
+        feedPatternNumber = iDistortedPattern;
+        feed = distortedPattern(:,feedPatternNumber);
+        plotBits(feed,16,10);
 
-for iDistortedPattern = 1:numberOfDistortedPattern
-    subplot(3,1,iDistortedPattern)
-    feedPatternNumber = iDistortedPattern;
-    feed = distortedPattern(:,feedPatternNumber);
-    plotBits(feed,16,10);
+        weightMatrix = getWeightMatrix(patterns,"ZeroDiagonal");
+        s = sign(McCullochPitts(feed,weightMatrix));
 
-    weightMatrix = getWeightMatrix(patterns,"ZeroDiagonal");
-    s = sign(McCullochPitts(feed,weightMatrix));
+        for iMcCullochPitts = 1:inf
+            pause(0.2)
+            plotBits(s,16,10);
+            if(s == sign(McCullochPitts(s,weightMatrix)));
+                steadyState = s
+                break
+            else
+                s = sign(McCullochPitts(s,weightMatrix));
+            end    
 
-    for iMcCullochPitts = 1:inf
-        pause(1)
-        plotBits(s,16,10);
-        if(s == sign(McCullochPitts(s,weightMatrix)));
-            steadyState = s
-            break
-        else
-            s = sign(McCullochPitts(s,weightMatrix));
-        end    
-
-    end
-
-    for iPattern = 1:numberOfPatterns
-        if(sign(s) == sign(patterns(:,iPattern)))
-            p = iPattern-1;
-            title("Distorted pattern #" + feedPatternNumber + " Converges at stored pattern " + p + " after " + iMcCullochPitts + " iterations")
         end
-        if(sign(s) == sign(-patterns(:,iPattern)))
-            p = iPattern-1;
-            title("Distorted pattern #" + feedPatternNumber + " Converges at stored pattern " + -p + " after " + iMcCullochPitts + " iterations")
+
+        for iPattern = 1:numberOfPatterns
+            if(sign(s) == sign(patterns(:,iPattern)))
+                p = iPattern-1;
+                title("Distorted pattern #" + feedPatternNumber + " Converges at stored pattern " + p + " after " + iMcCullochPitts + " iterations")
+            end
+            if(sign(s) == sign(-patterns(:,iPattern)))
+                p = iPattern-1;
+                title("Distorted pattern #" + feedPatternNumber + " Converges at stored pattern " + -p + " after " + iMcCullochPitts + " iterations")
+            end
         end
     end
+    pause(3)
+    distortedPattern = randi([0 1],160,4);
+    distortedPattern(distortedPattern == 0) = -1;
 end
-
-
-pixelBits = plotBits(steadyState,16,10)
-%%
-
-counter = zeros(1,5);
-invertedCounter = zeros(1,5);
-for patternNumber = 1:5;
-
-for iBits = 1:160
-    if(sign(s(iBits)) == sign(patterns(iBits,patternNumber)))
-        counter(patternNumber) = counter(patternNumber) + 1;
-    end
-    if(sign(s(iBits)) == sign(-patterns(iBits,patternNumber)))
-        invertedCounter(patternNumber) = invertedCounter(patternNumber) + 1;
-    end
-end
-end
-counter
-invertedCounter
-%%
-plotBits(feed,16,10)
