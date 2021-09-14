@@ -9,7 +9,7 @@ function be = feedStochasticNetwork(s,weightMatrix,r,stochasticFunction)
         end
     end
     %fungerar olika beroende på om pattern = 7 lr 45
-    %r = rand(1);
+    r = rand(1);
     for k = 1:numberOfBits
         if r<stochasticFunction(b(k))
             b(k) = 1;

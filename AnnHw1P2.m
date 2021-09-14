@@ -16,8 +16,7 @@ distortedPattern(:,4) = randomPattern
 patterns = [x1 x2 x3 x4 x5];
 [numberOfBits numberOfPatterns] = size(patterns);
 numberOfDistortedPattern = length(distortedPattern(1,:));
-while(true)
-    
+
     for iDistortedPattern = 1:numberOfDistortedPattern
         subplot(length(distortedPattern(1,:)),1,iDistortedPattern)
         feedPatternNumber = iDistortedPattern;
@@ -25,13 +24,14 @@ while(true)
         plotBits(feed,16,10);
 
         weightMatrix = getWeightMatrix(patterns,"ZeroDiagonal");
-        s = sign(McCullochPitts(feed,weightMatrix));
+        %s = sign(McCullochPitts(feed,weightMatrix));
+        s = feed
 
         for iMcCullochPitts = 1:inf
             pause(0.2)
             plotBits(s,16,10);
             if(s == sign(McCullochPitts(s,weightMatrix)));
-                steadyState = s
+                steadyState = s;
                 break
             else
                 s = sign(McCullochPitts(s,weightMatrix));
@@ -53,4 +53,3 @@ while(true)
     pause(3)
     distortedPattern = randi([0 1],160,4);
     distortedPattern(distortedPattern == 0) = -1;
-end

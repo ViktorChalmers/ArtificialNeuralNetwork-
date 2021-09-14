@@ -32,8 +32,8 @@ for trials = 1:numberOfTrials
         m(p) = m(p) + sNext(p)*feed(p);
     end
     m;
-    orderParameter(trials) = mean(m)
-    plotBits(sNext,20,10);
+    orderParameter(trials) = mean(m);
+    %plotBits(sNext,20,10);
 end
 
 meanOrderParameter = mean(orderParameter)
