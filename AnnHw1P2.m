@@ -27,14 +27,18 @@ numberOfDistortedPattern = length(distortedPattern(1,:));
         %s = sign(McCullochPitts(feed,weightMatrix));
         s = feed
 
+        betaNoise = 2;
+stochasticFunction = @(b) 1/(1+exp(-2*b*betaNoise));
+r = 1
+        
         for iMcCullochPitts = 1:inf
             pause(0.2)
             plotBits(s,16,10);
-            if(s == sign(McCullochPitts(s,weightMatrix)));
+            if(s == sign(feedStochasticNetwork(s,weightMatrix,r,stochasticFunction)));
                 steadyState = s;
                 break
             else
-                s = sign(McCullochPitts(s,weightMatrix));
+                s = sign(feedStochasticNetwork(s,weightMatrix,r,stochasticFunction));
             end    
 
         end
