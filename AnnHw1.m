@@ -1,4 +1,5 @@
 clear,clc
+
 choise = menu("Use visual tools?", "Yes", "no");
 numberOfPatterns = [12,24,48,70,100,120];
 numberOfBits = 120;
