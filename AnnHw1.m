@@ -25,10 +25,6 @@ for patternIterate = 1:length(numberOfPatterns)
 
         weightMatrix = getWeightMatrix(X);
         
-        %for i = 1:numberOfBits
-        %    weightMatrix(i,i) = 0;
-        %end
-        
         [randomPattern randomPatternNumber randomPatternBitNumber] = getRandomPattern(X);
 
         b = sign(McCullochPitts(randomPattern,weightMatrix));
