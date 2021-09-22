@@ -1,3 +1,4 @@
+McCullochPitts([1 1 1],[1 1 1;1 1 1])
 function be = McCullochPitts(s,weightMatrix) 
 [numberOfBits numberOfPatterns] = size(s);
 
