@@ -3,7 +3,7 @@ def McCullochPitts(s, weightMatrix):
 
     #[numberOfBits numberOfPatterns] = s.shape[0];
     numberOfBits = s.shape[0]
-    
+
     b = np.zeros(numberOfBits)
     for i in range(len(s)):
         for j in range(len(s)):
