@@ -37,20 +37,21 @@ threshold = zeros(1,numberOfNeurons)
 Threshold = zeros(1,numberOfNeurons)
 %hiddenLayer = []
 %for i = 1:1
-mu = randi([1 NUMBER_OF_PATTERNS])
-target = targetArray(mu)
-randomPattern = trainingSet(:,mu);
-
-neuronLocalField = CalculateLocalField(weightMatrix,randomPattern,threshold(mu))
-neuron = tanh(neuronLocalField)
-
-outputLocalField = CalculateLocalField(WeightMatrix,neuron,Threshold(mu))
-output = tanh(outputLocalField)
-weigthedError = GetWeigthedError(target,output,outputLocalField)
-searchDirection = weigthedError*neuron
-W = gradientDescent(WeightMatrix,etaGradient,searchDirection)
-
-
+    mu = randi([1 NUMBER_OF_PATTERNS])
+    target = targetArray(mu)
+    randomPattern = trainingSet(:,mu);
+    
+    neuronLocalField = CalculateLocalField(weightMatrix,randomPattern,threshold(mu))
+    neuron = tanh(neuronLocalField)
+    
+    outputLocalField = CalculateLocalField(WeightMatrix,neuron,Threshold(mu))
+    output = tanh(outputLocalField)
+ GetWeigthedError(1,1,1)  
+%weigthedError = GetWeigtherError(target,output,outputLocalField)
+    searchDirection = searchDirection(neuron, neuronLocalField,target(mu),output)'
+    W = gradientDescent(WeightMatrix,etaGradient,searchDirection)
+    
+    
 %classificationError = sum(abs(sign(o)-target))/(2*NUMBER_OF_PATTERNS);
 
 %energyFunction = 1/2*sum((target-o).^2)

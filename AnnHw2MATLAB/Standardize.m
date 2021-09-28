@@ -14,8 +14,9 @@ if nargin == 2 || isempty(standardDeviationEqualTo)
     standardDeviationEqualTo = 1;
 end
 
-tmp = inputArg - mean(inputArg)+meanEqualTo;
-outputArg = tmp./std(tmp).*standardDeviationEqualTo;
+tmp = inputArg - mean(inputArg(:,1))+meanEqualTo;
+outputArg = tmp./std(tmp(:,1)).*standardDeviationEqualTo;
+
 
 Standardize = outputArg;
 end
