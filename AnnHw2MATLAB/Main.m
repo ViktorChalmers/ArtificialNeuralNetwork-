@@ -3,59 +3,79 @@ VALIDATION_SET = csvread("validation_set.csv")';
 TRAINING_SET = csvread("training_set.csv")';
 
 validationSet = Standardize(VALIDATION_SET([1 2],:));
-trainingSet = Standardize(TRAINING_SET([1 2],:))
-
-weightMatrix = gaussian(2,3)
-numberOfHiddenNeurons = 10
-
-mu = 2
-
-randomPattern = trainingSet(:,mu)
-b = CalculateLocalField(weightMatrix,randomPattern)
-hiddenLayer = tanh(b)
-
-WeightMatrix = gaussian(1,3)
+Patterns = Standardize(TRAINING_SET([1 2],:));
 
 
-%%
-hiddenLayer
-WeightMatrix
-mtimes(WeightMatrix',hiddenLayer)
-
-
-%%
 clc,clear
+VALIDATION_SET = csvread("validation_set.csv")';
 TRAINING_SET = csvread("training_set.csv")';
-NUMBER_OF_PATTERNS = 100;
-trainingSet = Standardize(TRAINING_SET([1 2],:));
-targetArray = TRAINING_SET(3,:);
-numberOfNeurons = 100;
-weightMatrix = gaussian(2,numberOfNeurons);
-WeightMatrix = gaussian(1,numberOfNeurons)';
-etaGradient = 0.05
-threshold = zeros(1,numberOfNeurons)
-Threshold = zeros(1,numberOfNeurons)
-%hiddenLayer = []
-%for i = 1:1
-mu = randi([1 NUMBER_OF_PATTERNS])
-target = targetArray(mu)
-randomPattern = trainingSet(:,mu);
 
-neuronLocalField = CalculateLocalField(weightMatrix,randomPattern,threshold(mu))
-neuron = tanh(neuronLocalField)
-
-outputLocalField = CalculateLocalField(WeightMatrix,neuron,Threshold(mu))
-output = tanh(outputLocalField)
-weigthedError = GetWeigthedError(target,output,outputLocalField)
-searchDirection = weigthedError*neuron
-W = gradientDescent(WeightMatrix,etaGradient,searchDirection)
+Patterns = Standardize(TRAINING_SET([1 2],:)')';
+validationPatterns = Standardize(VALIDATION_SET([1 2],:)')';
 
 
-%classificationError = sum(abs(sign(o)-target))/(2*NUMBER_OF_PATTERNS);
+[numberOfBits numberOfPatterns] = size(Patterns);
+targetOutput = TRAINING_SET(3,:);
 
-%energyFunction = 1/2*sum((target-o).^2)
+[valNumberOfBits valNumberOfPatterns] = size(validationPatterns);
+valTargetOutput = VALIDATION_SET(3,:);
 
-%end
+numberOfNeurons = 15;
 
+weightMatrixOne = InitializeWeightMatrix(2,numberOfNeurons);
+weightMatrixOne = Standardize(weightMatrixOne);
+thresholdOne = zeros(numberOfNeurons,1);
+
+weightMatrixTwo = InitializeWeightMatrix(1,numberOfNeurons)';
+weightMatrixTwo = Standardize(weightMatrixTwo')';
+thresholdTwo = zeros(1,1);
+var(weightMatrixTwo)
+std(weightMatrixOne)
+
+etaGradient = 0.03;
+
+outputarray = zeros(1,numberOfPatterns);
+correctionError = 1
+while(correctionError > 0.12)
+    for i = 1:10000
+        randomPatternNumber = randi([1 numberOfPatterns]);
+        
+        
+        randomPattern = Patterns(:,randomPatternNumber);
+        target = targetOutput(randomPatternNumber);
+        
+        neuronLocalField = CalculateLocalField(weightMatrixOne,randomPattern,thresholdOne);
+        neuron = tanh(neuronLocalField);
+        
+        outputLocalField = CalculateLocalField(weightMatrixTwo,neuron,thresholdTwo);
+        output = tanh(outputLocalField);
+        
+        weightError = (target-output)*sech(outputLocalField)^2;
+        weightMatrixTwo = weightMatrixTwo + etaGradient*weightError*neuron';
+        thresholdTwo = thresholdTwo - etaGradient*weightError;
+        
+        se = sech(neuronLocalField).^2';
+        delta = weightError*weightMatrixTwo.*se;
+        delta = delta';
+        
+        weightMatrixOne = weightMatrixOne + etaGradient*delta*randomPattern';
+        thresholdOne = thresholdOne - etaGradient*delta;
+        
+        %energyFunction = 1/2*sum((target-o).^2)
+        outputarray(randomPatternNumber) = sign(output);
+    end
+    for iterate = 1:valNumberOfPatterns
+        tmpPattern = validationPatterns(:,iterate);
+        
+        validationNeuron = tanh(CalculateLocalField(weightMatrixOne,tmpPattern,thresholdOne));
+        validationOutput(iterate) = tanh(CalculateLocalField(weightMatrixTwo,validationNeuron,thresholdTwo));
+    end
+    correctionError = 1/(valNumberOfPatterns*2)*sum(abs(sign(validationOutput)-valTargetOutput))
+end
+plot3(validationPatterns(1,:),validationPatterns(2,:),sign(validationOutput),"*")
 %%
-plot3(VALIDATION_SET(:,1),VALIDATION_SET(:,2),VALIDATION_SET(:,3),"*")
+csvwrite('w2.csv',weightMatrixTwo)
+csvwrite('w1.csv',weightMatrixOne)
+csvwrite('t1.csv',thresholdOne)
+csvwrite('t2.csv',thresholdTwo)
+%VALIDATION_SET = csvread("validation_set.csv")';
