@@ -3,9 +3,9 @@ clc,clear,clf
 p = @(x) 1/(1+exp(-2*x));
 numberOfVisableNeurons = 3;
 probPatterns(1:4) = 1/4;
-hiddenNeurons = [1 2 4 8]
+hiddenNeurons = [2]
 boltzmanStore = zeros(length(hiddenNeurons),8)
-AVG = 50
+AVG = 5
 wBar = waitbar(0,"init");
 for average = 1:AVG
     waitbar(average/AVG,wBar,"Loading... " + average/AVG*100 + "%")
@@ -89,7 +89,7 @@ for average = 1:AVG
         boltzmanStore(nrIterate,:) = boltzmanStore(nrIterate,:) + boltzman'/AVG
     end
     
-    for i = 1:4
+    for i = 1:length(numberOfPatterns)
         kl(i) = sum(probPatterns(1:4).*log(probPatterns(1:4)./boltzmanStore(i,1:4)));
     end
     kl
@@ -107,9 +107,8 @@ probPatterns(5:8) = [];
 
 
 
-boltzmanStore(1,:);
-for i = 1:4
-    kl(i) = sum(probPatterns.*log(probPatterns./boltzmanStore(i,:)));
+for i = 1:length(numberOfPatterns)
+    kl(i) = sum(probPatterns.*log(probPatterns./boltzmanStore(i,:)))
 end
 %%
 clf
@@ -130,6 +129,7 @@ B = [0.0971    0.2374    0.1656    0.1313    0.1134    0.0968    0.0755    0.082
 j = [0.5132    0.4662    0.0408    0.0092]
 %%
 N = 3
-M=8
-(N-log2(M+1))
+M=2
+log(2)*(N-log2(M+1)-(M+1)/(2^(log2(M+1))))
+log2(4)
 

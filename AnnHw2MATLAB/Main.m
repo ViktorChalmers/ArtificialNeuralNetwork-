@@ -29,13 +29,11 @@ thresholdOne = zeros(numberOfNeurons,1);
 weightMatrixTwo = InitializeWeightMatrix(1,numberOfNeurons)';
 weightMatrixTwo = Standardize(weightMatrixTwo')';
 thresholdTwo = zeros(1,1);
-var(weightMatrixTwo)
-std(weightMatrixOne)
 
 etaGradient = 0.03;
 
 outputarray = zeros(1,numberOfPatterns);
-correctionError = 1
+correctionError = 1;
 while(correctionError > 0.12)
     for i = 1:10000
         randomPatternNumber = randi([1 numberOfPatterns]);
@@ -61,7 +59,6 @@ while(correctionError > 0.12)
         weightMatrixOne = weightMatrixOne + etaGradient*delta*randomPattern';
         thresholdOne = thresholdOne - etaGradient*delta;
         
-        %energyFunction = 1/2*sum((target-o).^2)
         outputarray(randomPatternNumber) = sign(output);
     end
     for iterate = 1:valNumberOfPatterns
@@ -70,10 +67,10 @@ while(correctionError > 0.12)
         validationNeuron = tanh(CalculateLocalField(weightMatrixOne,tmpPattern,thresholdOne));
         validationOutput(iterate) = tanh(CalculateLocalField(weightMatrixTwo,validationNeuron,thresholdTwo));
     end
-    correctionError = 1/(valNumberOfPatterns*2)*sum(abs(sign(validationOutput)-valTargetOutput))
+    correctionError = 1/(valNumberOfPatterns*2)*sum(abs(sign(validationOutput)-valTargetOutput));
 end
 plot3(validationPatterns(1,:),validationPatterns(2,:),sign(validationOutput),"*")
-%%
+
 csvwrite('w2.csv',weightMatrixTwo)
 csvwrite('w1.csv',weightMatrixOne)
 csvwrite('t1.csv',thresholdOne)
