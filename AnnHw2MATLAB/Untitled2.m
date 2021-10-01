@@ -65,7 +65,7 @@ for average = 1:AVG
         boltzman = zeros(8,1);
         itOuter = 1000;
         itInner = 1000;
-
+        
         for outer = 1:itOuter
             
             mu = randi(8);
@@ -90,11 +90,11 @@ for average = 1:AVG
     end
     
     for i = 1:4
-    kl(i) = sum(probPatterns(1:4).*log(probPatterns(1:4)./boltzmanStore(i,1:4)));
+        kl(i) = sum(probPatterns(1:4).*log(probPatterns(1:4)./boltzmanStore(i,1:4)));
     end
     kl
-
-plot(hiddenNeurons,kl)
+    
+    plot(hiddenNeurons,kl)
 end
 close(wBar)
 
@@ -122,9 +122,14 @@ xlabel("number of hidden neurons")
 talbe(kl)
 
 %% latest
-    0.0971    0.2374    0.1656    0.1313    0.1134    0.0968    0.0755    0.0829
-    0.2194    0.1158    0.1650    0.1444    0.0512    0.0849    0.0878    0.1315
-    0.2655    0.2243    0.2125    0.2622    0.0077    0.0131    0.0130    0.0018
-    0.2445    0.2523    0.2500    0.2442    0.0025    0.0024    0.0008    0.0034
+B = [0.0971    0.2374    0.1656    0.1313    0.1134    0.0968    0.0755    0.0829;
+    0.2194    0.1158    0.1650    0.1444    0.0512    0.0849    0.0878    0.1315;
+    0.2655    0.2243    0.2125    0.2622    0.0077    0.0131    0.0130    0.0018;
+    0.2445    0.2523    0.2500    0.2442    0.0025    0.0024    0.0008    0.0034]
 
-    0.5132    0.4662    0.0408    0.0092
+j = [0.5132    0.4662    0.0408    0.0092]
+%%
+N = 3
+M=8
+(N-log2(M+1))
+
