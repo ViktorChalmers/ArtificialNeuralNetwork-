@@ -39,26 +39,31 @@ clf
 hold on
 %
 index = [2 5 4 7 3 27 28 30 33 37]
-%index = [1]
 
-
+%%
 for i = 1:length(index)
-    pattern = xTr(:,index(i));
+    pattern = xTr(:,index(i))
     
     subplot(length(index),2,i*2-1)
-    pat = double(xTr(:,index(i)));
-    pat = reshape(pat,[28 28]);
-    imshow(pat,[28 28],'InitialMagnification','fit')
-    
-    subplot(length(index),2,i*2)
     predPattern = net.predict(pattern);
     predPattern = double(predPattern);
     predPattern = reshape(predPattern,[28 28]);
     imshow(predPattern,[28 28],'InitialMagnification','fit')
     
+    subplot(length(index),2,i*2)
+    pat2 = double(xTr(:,index(i)));
+    pat2 = reshape(pat2,[28 28]);
+    imshow(pat2,[28 28],'InitialMagnification','fit')
 end
 
+
+
+
+
+
+
 %%
+
 
 %%Montage
 xTr;
