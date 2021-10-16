@@ -21,7 +21,7 @@ layers = [
 
 options = trainingOptions('adam', ...
     'InitialLearnRate',0.001, ...
-    'MaxEpochs',800 , ...
+    'MaxEpochs',1200 , ...
     'MiniBatchSize',8192, ...
     'Shuffle', 'every-epoch', ...
     'Plots','training-progress');
@@ -31,11 +31,13 @@ options = trainingOptions('adam', ...
 save autoencoder2
 %% LoadNetwork
 clc,clear
-load autoencoder2
+load autoencoder1
 %% Montage
 clf
 hold on
 index = [2 5 4 7 3 27 28 30 33 37];
+%index = digit0Index(1:10)
+
 
 for i = 1:length(index)
     pattern = xTr(:,index(i));
@@ -55,7 +57,7 @@ layersEncode = [
     ];
 
 layersDecode = [
-    sequenceInputLayer(4)
+    sequenceInputLayer(2)
     net.Layers(6:7)
     regressionLayer
     ];
@@ -83,19 +85,21 @@ patternIndex = digit1Index
 
 pattern = xTr(:,patternIndex);
 output = networkEncode.predict(pattern)
-s = scatter(output(1,:),output(2,:),20,'filled')
+s = scatter(output(1,:),output(2,:),20,'x')
 s.MarkerFaceAlpha = 'flat';
-
-patternIndex = 1:1000
-
-pattern = xTr(:,patternIndex);
-output = networkEncode.predict(pattern)
-s = scatter(output(1,:),output(2,:),2,'filled')
-s.MarkerFaceAlpha = 'flat';
-
-fplot(@(x) x,[0 10])
-legend("digit 0","digit 1","decision boundary")
 axis equal
+
+% patternIndex = 1:1000
+% 
+% pattern = xTr(:,patternIndex);
+% output = networkEncode.predict(pattern)
+% s = scatter(output(1,:),output(2,:),2,'filled')
+% s.MarkerFaceAlpha = 'flat';
+title("plot for autoencoder 1")
+xaxis("")
+fplot(@(x) x,[0 20])
+legend("digit 0","digit 1","decision boundary")
+axis([0 30 0 30])
 
 %%
 load wellReproducedNinesIndex.mat
@@ -168,24 +172,27 @@ wellReproducedNinesIndex = [wellReproducedNinesIndex index]
 save wellReproducedNinesIndex.mat wellReproducedNinesIndex
 
 %% autoencoder1
-clc
-x = linspace(0,3);
-y = x;
+clf
+x = linspace(0,5,10);
+y = x+4;
 
-for i = 1:100
+for i = 1:length(x)
     pat = networkDecode.predict([x(i);y(i)]);
     plotPattern(pat);
     pause(0.01)
 end
 %%
 clf
-x = linspace(1,5)
-k1 = 1
-k2 = 1
-k3 = 1
-k4 = 1
-for i = 1:100
-    pat = networkDecode.predict([x(i)*k1;x(i)*k2;x(i)*k3;x(i)*k4]);
+x = linspace(1,5,10)
+n1 = x
+n2 = x*2
+%n3 = x
+%n4 = x
+
+for i = 1:length(x)
+    %input = [n1(i);n2(i);n3(i);n4(i)]
+    input = [n1(i);n2(i)]
+    pat = networkDecode.predict(input);
     plotPattern(pat);
     pause(0.01)
 end
