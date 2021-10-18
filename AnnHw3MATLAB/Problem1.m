@@ -67,7 +67,6 @@ imshow(pattern,[28 28],'InitialMagnification','fit')
 %%
 predtTrain = network.classify(xTest2);
 p = double(string(predtTrain))
-p(1:10)
 pattern = xTrain(:,:,4);
 imshow(pattern,[28 28],'InitialMagnification','fit')
 csvwrite("classifications.csv",p)
