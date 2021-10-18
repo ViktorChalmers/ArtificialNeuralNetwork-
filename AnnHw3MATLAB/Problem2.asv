@@ -57,7 +57,7 @@ layersEncode = [
     ];
 
 layersDecode = [
-    sequenceInputLayer(4)
+    sequenceInputLayer(2)
     net.Layers(6:7)
     regressionLayer
     ];
@@ -106,17 +106,18 @@ axis([0 30 0 30])
 clf,clc
 hold on
 tTr = double(tTrain(1:1000));
-digit0Index = find(tTr == 1);
+digit0Index = find(tTr == 10);
 digit0 = xTr(:,digit0Index);
+
+digit1Index = find(tTr == 2);
+digit1 = xTr(:,digit0Index);
 
 patternIndex = digit0Index;
 
 pattern = xTr(:,patternIndex);
 output = networkEncode.predict(pattern);
-[me in] = max(output)
-
-predPattern = net.predict(pattern);
-plotPattern(predPattern)
+s = scatter(output(1,:),output(2,:),20,'filled')
+s.MarkerFaceAlpha = 'flat';
 %%
 load wellReproducedNinesIndex.mat
 patNumber = [2 5 4 7 3 27 28 30 33 37];
