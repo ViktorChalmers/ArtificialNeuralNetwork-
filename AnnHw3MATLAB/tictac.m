@@ -1,20 +1,18 @@
-Q = zeros(3)
-
-table = zeros(3)
-
-if table == Q
-    nextTable = Q
-else
-    table = table + rand(-1,1)
-end
-
-checkWincondition(win/equal?)
-save Qtable
-%%
-
 input =  [
     0 0 0;
     0 0 0;
     0 0 0
     ]
 
+Actions = []
+
+gamma = 1;
+alpha = 1;
+epsilon = 1;
+
+Q1 = zeros(6,3)
+Q2 = zeros(6,3)
+
+
+Q2 = playerMove(Q1)
+Q2 = playerMove(Q2)
