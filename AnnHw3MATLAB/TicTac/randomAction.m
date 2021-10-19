@@ -1,5 +1,6 @@
-function nextMove = randomAction(QTable)
-actions = QTable(4:end,1:3);
+
+function nextMove = randomAction(Q)
+actions = Q(4:end,1:3);
 %[row col]  = find(isnan(QTable) == 1);
 
 
@@ -12,6 +13,8 @@ possibleMoves = [row col];
 
 random = randi(length(possibleMoves),1,2);
 possibleMoves=possibleMoves(random);
-possibleMoves(1)=possibleMoves(1)+3
+possibleMoves(1)=possibleMoves(1)+3;
+
+nextMove = possibleMoves;
 end
 
