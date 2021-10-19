@@ -13,7 +13,7 @@ patterns = [x1 x2 x3 x4 x5];
 [numberOfBits numberOfPatterns] = size(patterns);
 numberOfDistortedPattern = length(distortedPattern(1,:))
 
-imshow(reshape(x1,[10 16]))
+imshow(reshape(x4,[10 16]))
 %%
 for iDistortedPattern = 1:numberOfDistortedPattern
     subplot(length(distortedPattern(1,:)),1,iDistortedPattern)
