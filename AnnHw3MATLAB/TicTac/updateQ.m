@@ -8,5 +8,6 @@ stage = Q2(1:3,1:3);
 
 stage(stage==1|stage == -1) = NaN;
 Q2(4:end,1:3) = stage;
+
 end
 
