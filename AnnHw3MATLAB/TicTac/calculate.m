@@ -13,6 +13,10 @@
 % Q2(4:end,1:3) = zeros(3)
 % Q2
 % nextQ2
+% Q2 = zeros(6,3)
+% 
+% nextQ2 = zeros(6,3)
+% nextQ2(1,1) = 1
 % calculate(Q2,nextQ2,player,1)
 
 function Q = calculate(Q,nextQ,player,R)
@@ -23,11 +27,11 @@ gamma = 0.1;
 
 
 actions = Q(4:end,1:3);
-max(nextQ);
+max(nextQ(1:3));
 k = (Q(1:3,1:3)-nextQ(1:3,1:3));
 [row col] = find(k == -player);
 Q;
-ma = max(max(nextQ));
+ma = max(max(nextQ(4:6,1:3)));
 Q(row+3,col) = Q(row+3,col)+alpha*(R+ma*gamma-Q(row+3,col));
 
 end
